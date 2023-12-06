@@ -1,8 +1,20 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from './common/hooks';
+import {
+  decrement,
+  increment,
+  selectCount,
+} from './features/counter/counterSlice';
 import icon from '../../assets/icon.svg';
 import './App.css';
 
 function Hello() {
+  const count = useAppSelector(selectCount);
+  const dispatch = useAppDispatch();
+  const [incrementAmount, setIncrementAmount] = useState('2');
+
+  const incrementValue = Number(incrementAmount) || 0;
   return (
     <div>
       <div className="Hello">
@@ -34,6 +46,19 @@ function Hello() {
             Donate
           </button>
         </a>
+        <button
+          aria-label="Decrement value"
+          onClick={() => dispatch(decrement())}
+        >
+          -
+        </button>
+        <span>{count}</span>
+        <button
+          aria-label="Increment value"
+          onClick={() => dispatch(increment())}
+        >
+          +
+        </button>
       </div>
     </div>
   );

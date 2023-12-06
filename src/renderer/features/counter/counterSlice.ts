@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../common/store';
 
 // Define a type for the slice state
-interface CounterState {
+export interface CounterState {
   value: number;
 }
 
