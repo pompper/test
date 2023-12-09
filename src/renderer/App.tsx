@@ -1,20 +1,29 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from './common/hooks';
+import { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch, useEngine } from './common/hooks';
+import icon from '../../assets/icon.svg';
+import './App.css';
 import {
   decrement,
   increment,
   selectCount,
 } from './features/counter/counterSlice';
-import icon from '../../assets/icon.svg';
-import './App.css';
 
 function Hello() {
   const count = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
+  const engine = useEngine();
 
-  const incrementValue = Number(incrementAmount) || 0;
+  useEffect(() => {
+    engine.updaterLoop.start();
+    engine.updaterLoop.stop();
+    engine.updaterLoop.start();
+    engine.updaterLoop.stop();
+    engine.updaterLoop.start();
+    engine.updaterLoop.stop();
+    engine.updaterLoop.start();
+  }, [engine]);
   return (
     <div>
       <div className="Hello">

@@ -15,6 +15,9 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     'import/no-cycle': 'off',
     'react/button-has-type': 'off',
+    'no-useless-constructor': 'off',
+    'no-empty-function': 'off',
+    'lines-between-class-members': 'off',
   },
   parserOptions: {
     ecmaVersion: 2022,

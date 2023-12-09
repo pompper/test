@@ -2,15 +2,15 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
 import store from './common/store';
-import EngineComponent from './engine/EngineComponent';
+import EngineProvider from './engine/EngineProvider';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 root.render(
   <Provider store={store}>
-    <EngineComponent reduxStore={store}>
+    <EngineProvider reduxStore={store}>
       <App />
-    </EngineComponent>
+    </EngineProvider>
   </Provider>,
 );
 
