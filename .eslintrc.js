@@ -18,6 +18,7 @@ module.exports = {
     'no-useless-constructor': 'off',
     'no-empty-function': 'off',
     'lines-between-class-members': 'off',
+    'class-methods-use-this': 'off',
   },
   parserOptions: {
     ecmaVersion: 2022,

@@ -15,15 +15,6 @@ function Hello() {
   const [incrementAmount, setIncrementAmount] = useState('2');
   const engine = useEngine();
 
-  useEffect(() => {
-    engine.updaterLoop.start();
-    engine.updaterLoop.stop();
-    engine.updaterLoop.start();
-    engine.updaterLoop.stop();
-    engine.updaterLoop.start();
-    engine.updaterLoop.stop();
-    engine.updaterLoop.start();
-  }, [engine]);
   return (
     <div>
       <div className="Hello">
