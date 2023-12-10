@@ -7,11 +7,12 @@ import PLCController from './PLCController';
 import SettingsRepository from './data/SettingsRepository';
 import PLCConnection from './ipc/PLCConnection';
 import PLCData from './ipc/PLCData';
+import ISettingRepository from './interfaces/ISettingRepository';
 
 export default class Engine implements LoopEntity {
   public testValue!: number;
 
-  public readonly settings!: SettingsRepository;
+  public readonly settings!: ISettingRepository;
   public readonly updaterLoop!: UpdaterLoop;
   // public readonly mainIpc!: MainIpcController;
   public readonly plc!: PLCController;
