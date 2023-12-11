@@ -1,5 +1,3 @@
-import { EnhancedStore } from '@reduxjs/toolkit';
-import { CounterState, increment } from '../features/counter/counterSlice';
 import UpdaterLoop from './UpdaterLoop';
 import { LoopEntity } from './LoopEntity';
 import MainIpcController from './MainIpcController';
@@ -17,13 +15,8 @@ export default class Engine implements LoopEntity {
   // public readonly mainIpc!: MainIpcController;
   public readonly plc!: PLCController;
 
-  public readonly reduxStore!: EnhancedStore<{
-    counter: CounterState;
-  }>;
-
-  constructor({ reduxStore }: { reduxStore: EnhancedStore }) {
+  constructor() {
     this.testValue = 0;
-    this.reduxStore = reduxStore;
     this.settings = new SettingsRepository();
     // this.mainIpc = new MainIpcController();
 
@@ -38,7 +31,6 @@ export default class Engine implements LoopEntity {
 
   private updatePLC() {
     this.testValue += 1.5;
-    this.reduxStore.dispatch(increment());
   }
 
   update() {

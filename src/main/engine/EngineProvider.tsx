@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useMemo, useRef } from 'react';
 import { EnhancedStore } from '@reduxjs/toolkit';
-import { CounterState } from '../features/counter/counterSlice';
+import { CounterState } from '../../renderer/features/counter/counterSlice';
 import Engine from './Engine';
 
 export const LooperContext = createContext<Engine | null>(null);

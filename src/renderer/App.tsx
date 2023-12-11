@@ -1,6 +1,6 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch, useEngine } from './common/hooks';
+import { useAppSelector, useAppDispatch } from './common/hooks';
 import icon from '../../assets/icon.svg';
 import './App.css';
 import {
@@ -13,7 +13,7 @@ function Hello() {
   const count = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
-  const engine = useEngine();
+  // const engine = useEngine();
 
   return (
     <div>

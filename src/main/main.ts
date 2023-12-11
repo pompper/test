@@ -9,11 +9,12 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, ipcRenderer } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import Engine from './engine/Engine';
 
 class AppUpdater {
   constructor() {
@@ -122,6 +123,14 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+const engine = new Engine();
+ipcMain.on('test', async (event, arg) => {
+  console.log(arg);
+  setInterval(() => {
+    event.reply('test', engine.testValue);
+  }, 1000);
 });
 
 app
