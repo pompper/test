@@ -20,23 +20,16 @@ export default class Engine implements LoopEntity {
     this.settings = new SettingsRepository();
     // this.mainIpc = new MainIpcController();
 
-    const plcConnection = new PLCModbusConnection(
-      this.settings.getPlcConnections(),
+    this.plc = new PLCController(
+      new PLCModbusConnection(this.settings.getPlcConnections()),
+      new PLCData(),
     );
-    const plcReader = new PLCData();
-
-    this.plc = new PLCController(plcConnection, plcReader);
 
     this.updaterLoop = new UpdaterLoop(this);
     this.updaterLoop.start();
   }
 
-  private updatePLC() {
-    this.testValue += 1.5;
-  }
-
   update() {
-    this.updatePLC();
     this.plc.update();
   }
 }

@@ -2,7 +2,7 @@ import PLCConnectStrategy from '../PLCConnectStrategy';
 import PLCReadStrategy from './PLCReadStrategy';
 
 export default interface IPLCController {
-  connection: PLCConnectStrategy;
+  modbus: PLCConnectStrategy;
   data: PLCReadStrategy;
 
   connect(slaveId: number): boolean;

@@ -3,35 +3,35 @@ import PLCReadStrategy from './interfaces/PLCReadStrategy';
 import IPLCController from './interfaces/IPLCController';
 
 export default class PLCController implements IPLCController {
-  connection!: PLCConnectStrategy;
+  modbus!: PLCConnectStrategy;
   data!: PLCReadStrategy;
 
   constructor(connection: PLCConnectStrategy, plcReader: PLCReadStrategy) {
-    this.connection = connection;
+    this.modbus = connection;
     this.data = plcReader;
   }
 
   connect(slaveId: number): boolean {
-    return this.connection.connect(slaveId);
+    return this.modbus.connect(slaveId);
   }
 
   disconnect(slaveId: number): boolean {
-    return this.connection.disconnect(slaveId);
+    return this.modbus.disconnect(slaveId);
   }
 
   testConnection(slaveId: number): boolean {
-    return this.connection.ping(slaveId);
+    return this.modbus.ping(slaveId);
   }
 
   update(): void {
     // Iterate through all connections using for...in loop
     // eslint-disable-next-line no-restricted-syntax
-    for (const key in this.connection.modbusConfigs) {
+    for (const key in this.modbus.modbusConfigs) {
       if (
-        Object.prototype.hasOwnProperty.call(this.connection.modbusConfigs, key)
+        Object.prototype.hasOwnProperty.call(this.modbus.modbusConfigs, key)
       ) {
         const slaveId = parseInt(key, 10); // Convert key to a number if needed
-        const connectionData = this.connection.modbusConfigs[slaveId];
+        const connectionData = this.modbus.modbusConfigs[slaveId];
         // Use connectionId and connectionData as needed
         // console.log(
         //   `Connection ID: ${slaveId}, Connection Data:`,

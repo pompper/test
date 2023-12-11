@@ -1,5 +1,6 @@
 /* global NodeJS */
 import Engine from './Engine';
+import { UPDATERLOOP_MIN_INTERVAL_MS } from './data/constants';
 import { LoopEntity } from './interfaces/LoopEntity';
 
 export default class UpdaterLoop implements LoopEntity {
@@ -37,9 +38,10 @@ export default class UpdaterLoop implements LoopEntity {
   }
 
   setInterval(ms: number): void {
-    const MIN_MS = 50;
-    if (ms < MIN_MS) {
-      throw new RangeError(`Cannot set interval lower than ${MIN_MS} ms`);
+    if (ms < UPDATERLOOP_MIN_INTERVAL_MS) {
+      throw new RangeError(
+        `Cannot set interval lower than ${UPDATERLOOP_MIN_INTERVAL_MS} ms`,
+      );
     }
     this.intervalMs = ms;
     // if (this.running) {
