@@ -1,6 +1,6 @@
 /* global NodeJS */
 import Engine from './Engine';
-import { LoopEntity } from './LoopEntity';
+import { LoopEntity } from './interfaces/LoopEntity';
 
 export default class UpdaterLoop implements LoopEntity {
   private running!: boolean;

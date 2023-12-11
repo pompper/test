@@ -59,7 +59,7 @@ const installExtensions = async () => {
 
 const createWindow = async () => {
   if (isDebug) {
-    await installExtensions();
+    // await installExtensions();
   }
 
   const RESOURCES_PATH = app.isPackaged
@@ -128,9 +128,9 @@ app.on('window-all-closed', () => {
 const engine = new Engine();
 ipcMain.on('test', async (event, arg) => {
   console.log(arg);
-  setInterval(() => {
-    event.reply('test', engine.testValue);
-  }, 1000);
+  // setInterval(() => {
+  //   event.reply('test', engine.testValue);
+  // }, 1000);
 });
 
 app

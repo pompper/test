@@ -1,5 +1,5 @@
-import { PLCConnectInput } from '../PLCConnectStrategy';
+import { PLCModbusConfig } from '../PLCConnectStrategy';
 
 export type SettingsModel = {
-  plcConnections: PLCConnectInput[];
+  plcConnections: PLCModbusConfig[];
 };

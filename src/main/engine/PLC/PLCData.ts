@@ -1,4 +1,4 @@
-import PLCReadStrategy from '../PLCReadStrategy';
+import PLCReadStrategy from '../interfaces/PLCReadStrategy';
 
 export default class PLCData implements PLCReadStrategy {
   instance!: Record<number, number[]>;

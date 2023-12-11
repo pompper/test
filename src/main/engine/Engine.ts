@@ -1,10 +1,10 @@
 import UpdaterLoop from './UpdaterLoop';
-import { LoopEntity } from './LoopEntity';
+import { LoopEntity } from './interfaces/LoopEntity';
 import MainIpcController from './MainIpcController';
 import PLCController from './PLCController';
 import SettingsRepository from './data/SettingsRepository';
-import PLCConnection from './ipc/PLCConnection';
-import PLCData from './ipc/PLCData';
+import PLCModbusConnection from './PLC/PLCModbusConnection';
+import PLCData from './PLC/PLCData';
 import ISettingRepository from './interfaces/ISettingRepository';
 
 export default class Engine implements LoopEntity {
@@ -20,7 +20,9 @@ export default class Engine implements LoopEntity {
     this.settings = new SettingsRepository();
     // this.mainIpc = new MainIpcController();
 
-    const plcConnection = new PLCConnection(this.settings.getPlcConnections());
+    const plcConnection = new PLCModbusConnection(
+      this.settings.getPlcConnections(),
+    );
     const plcReader = new PLCData();
 
     this.plc = new PLCController(plcConnection, plcReader);
