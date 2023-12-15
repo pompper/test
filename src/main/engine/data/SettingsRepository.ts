@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { PLCModbusConfig } from '../PLCConnectStrategy';
+import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
 import { SettingsModel } from '../model/SettingsModel';
 import ISettingRepository from '../interfaces/ISettingRepository';
 import { APP_CONFIG_JSON_PATH } from './constants';

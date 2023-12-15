@@ -1,4 +1,4 @@
-import PLCConnectStrategy from '../PLCConnectStrategy';
+import PLCConnectStrategy from './PLCConnectStrategy';
 import PLCReadStrategy from './PLCReadStrategy';
 
 export default interface IPLCController {

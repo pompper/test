@@ -1,5 +1,5 @@
 import ModbusRTU from 'modbus-serial';
-import { PLCModbusConfig } from '../PLCConnectStrategy';
+import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
 
 export default class ModbusConnectionMaintainer {
   private hasFailed: boolean = false;
