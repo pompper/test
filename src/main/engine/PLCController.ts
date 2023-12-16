@@ -7,7 +7,7 @@ import ModbusDataUpdater from './PLC/ModbusDataUpdater';
 export default class PLCController implements IPLCController {
   modbus!: PLCConnectStrategy;
   data!: IPLCDataRepository;
-  updater!: IModbusDataUpdater;
+  private updater!: IModbusDataUpdater;
 
   constructor(connection: PLCConnectStrategy, plcReader: IPLCDataRepository) {
     this.modbus = connection;

@@ -99,7 +99,6 @@ export default class ModbusConnectionMaintainer {
       }
     } catch (error) {
       console.error('Error:', error);
-      // Retry the internet request immediately in case of failure (or perform some backoff strategy)
     }
   }
 }

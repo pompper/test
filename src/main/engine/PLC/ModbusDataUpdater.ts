@@ -1,5 +1,6 @@
 import PLCController from '../PLCController';
 import IModbusDataUpdater from '../interfaces/IModbusDataUpdater';
+import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 
 export default class ModbusDataUpdater implements IModbusDataUpdater {
@@ -37,8 +38,12 @@ export default class ModbusDataUpdater implements IModbusDataUpdater {
           key,
         )
       ) {
-        this.plcController.modbus.connections[key].update();
+        this.updateEach(parseInt(key, 10));
       }
     }
+  }
+
+  private updateEach(key: number) {
+    this.plcController.modbus.connections[key].update();
   }
 }
