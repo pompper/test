@@ -4,7 +4,7 @@ import MainIpcController from './MainIpcController';
 import PLCController from './PLCController';
 import SettingsRepository from './data/SettingsRepository';
 import PLCModbusConnection from './PLC/PLCModbusConnection';
-import PLCData from './PLC/PLCData';
+import PLCDataRepository from './PLC/PLCDataRepository';
 import ISettingRepository from './interfaces/ISettingRepository';
 
 export default class Engine implements LoopEntity {
@@ -22,7 +22,7 @@ export default class Engine implements LoopEntity {
 
     this.plc = new PLCController(
       new PLCModbusConnection(this.settings.getPlcConnections()),
-      new PLCData(),
+      new PLCDataRepository(),
     );
 
     this.updaterLoop = new UpdaterLoop(this);

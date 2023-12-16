@@ -1,42 +1,56 @@
 import ModbusRTU from 'modbus-serial';
+import EventEmitter from 'events';
 import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
+import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 
 export default class ModbusConnectionMaintainer {
   private hasFailed: boolean = false;
   private lastRequestTimestamp: number = 0;
   config!: PLCModbusConfig;
   clientModbusTCP!: ModbusRTU;
+  isConnected!: boolean;
+  holdingRegistersData: number[] = [];
+  event!: EventEmitter;
 
   constructor(modbusConfig: PLCModbusConfig) {
     this.config = modbusConfig;
     this.clientModbusTCP = new ModbusRTU();
+    this.isConnected = false;
+    this.event = new EventEmitter();
   }
 
   public async connect() {
     // open connection to a tcp line
-    this.clientModbusTCP.connectTCP(this.config.host, {
-      port: this.config.port,
-    });
+    this.clientModbusTCP
+      .connectTCP(this.config.host, {
+        port: this.config.port,
+      })
+      .then(() => {
+        this.isConnected = true;
+        return true;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     this.clientModbusTCP.setID(this.config.unitId);
     this.clientModbusTCP.setTimeout(this.config.timeout);
   }
 
   // Method to perform the internet request
-  private performInternetRequest(): Promise<any> {
+  private readHoldingRegisters(): Promise<any> {
     // Simulating an internet request that might fail
     return new Promise((resolve, reject) => {
       // Logic for making the internet request...
-
-      // Assuming the request fails
-      const requestFailed = true;
-
-      if (requestFailed) {
-        this.handleFailedRequest(); // Call method to handle the failed request
-        reject(new Error('Request failed'));
-      } else {
-        this.hasFailed = false; // Reset the flag when the request succeeds
-        resolve('Request succeeded');
-      }
+      this.clientModbusTCP
+        .readHoldingRegisters(0, 100)
+        .then((data) => {
+          this.hasFailed = false; // Reset the flag when the request succeeds
+          return resolve(data);
+        })
+        .catch((e) => {
+          this.handleFailedRequest(); // Call method to handle the failed request
+          return reject(new Error('Request failed'));
+        });
     });
   }
 
@@ -52,14 +66,25 @@ export default class ModbusConnectionMaintainer {
   }
 
   // Method to maintain the loop of internet requests
-  public async maintainConnectionLoop(): Promise<void> {
+  public async update(): Promise<void> {
+    if (!this.isConnected) {
+      return;
+    }
     try {
       const currentTime = Date.now();
       const elapsedTime = currentTime - this.lastRequestTimestamp;
 
       if (elapsedTime >= this.config.requestInterval) {
-        await this.performInternetRequest(); // Perform the internet request
+        this.holdingRegistersData = await this.readHoldingRegisters(); // Perform the Modbus request
         this.lastRequestTimestamp = Date.now(); // Update the timestamp after the request
+
+        const eventEmit: ModbusPLCDataModel = {
+          unitId: this.config.unitId,
+          data: {
+            holdingRegisters: this.holdingRegistersData,
+          },
+        };
+        this.event.emit('data', eventEmit);
       } else {
         const remainingTime = this.config.requestInterval - elapsedTime;
         console.log(

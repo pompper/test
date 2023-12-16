@@ -1,4 +1,6 @@
-import PLCConnectStrategy, { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
+import PLCConnectStrategy, {
+  PLCModbusConfig,
+} from '../interfaces/PLCConnectStrategy';
 import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
 
 export default class PLCModbusConnection implements PLCConnectStrategy {

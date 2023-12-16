@@ -1,11 +1,12 @@
 import PLCReadStrategy from '../interfaces/PLCReadStrategy';
 
-export default class PLCData implements PLCReadStrategy {
+export default class PLCDataRepository implements PLCReadStrategy {
   instance!: Record<number, number[]>;
 
   constructor() {
     this.instance = [];
   }
+
   setPLCData(slaveId: number, data: number[]): void {
     this.instance[slaveId] = data;
   }
