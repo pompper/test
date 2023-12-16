@@ -1,8 +1,10 @@
-export default interface PLCReadStrategy {
-  instance: Record<number, number[]>;
+import { ModbusPLCDataModel } from '../PLC/ModbusPLCDataModel';
 
-  setPLCData(slaveId: number, data: number[]): void;
-  getPLCData(slaveId: number): number[];
+export default interface PLCReadStrategy {
+  instance: Record<number, ModbusPLCDataModel>;
+
+  setPLCData(slaveId: number, data: ModbusPLCDataModel): void;
+  getPLCData(slaveId: number): ModbusPLCDataModel;
 
   // getBatteryRFIDList(slaveId: number): string[];
   // getClock(slaveId: number): number[];

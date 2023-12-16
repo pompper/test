@@ -3,7 +3,7 @@ import { LoopEntity } from './interfaces/LoopEntity';
 import MainIpcController from './MainIpcController';
 import PLCController from './PLCController';
 import SettingsRepository from './data/SettingsRepository';
-import PLCModbusConnection from './PLC/PLCModbusConnection';
+import PLCModbusConnectionHandler from './PLC/PLCModbusConnectionHandler';
 import PLCDataRepository from './PLC/PLCDataRepository';
 import ISettingRepository from './interfaces/ISettingRepository';
 
@@ -21,7 +21,10 @@ export default class Engine implements LoopEntity {
     // this.mainIpc = new MainIpcController();
 
     this.plc = new PLCController(
-      new PLCModbusConnection(this.settings.getPlcConnections()),
+      new PLCModbusConnectionHandler(
+        this.settings.getPlcConnections(),
+        this.settings.getPlcReadConfig(),
+      ),
       new PLCDataRepository(),
     );
 

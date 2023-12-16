@@ -7,5 +7,17 @@
       "requestInterval": 500,
       "timeout": 2000
     }
-  ]
+  ],
+  "plcReadConfig": {
+    "readModbus": {
+      "holdingRegisters": {
+        "start": 0,
+        "end": 100
+      },
+      "coils": {
+        "start": 0,
+        "end": 100
+      }
+    }
+  }
 }

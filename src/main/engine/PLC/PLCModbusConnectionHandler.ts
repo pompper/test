@@ -1,20 +1,27 @@
 import PLCConnectStrategy, {
   PLCModbusConfig,
 } from '../interfaces/PLCConnectStrategy';
+import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
 
-export default class PLCModbusConnection implements PLCConnectStrategy {
+export default class PLCModbusConnectionHandler implements PLCConnectStrategy {
   modbusConfigs: Record<number, PLCModbusConfig> = {};
   connections: Record<number, ModbusConnectionMaintainer> = {};
 
-  constructor(plcConnections: PLCModbusConfig[]) {
-    this.setPLCConntection(plcConnections);
+  constructor(plcConnections: PLCModbusConfig[], plcReadConfig: PLCReadConfig) {
+    this.setPLCConntection(plcConnections, plcReadConfig);
   }
 
-  setPLCConntection(plcConnections: PLCModbusConfig[]) {
+  setPLCConntection(
+    plcConnections: PLCModbusConfig[],
+    plcReadConfig: PLCReadConfig,
+  ) {
     plcConnections.forEach((p, i) => {
       this.modbusConfigs[p.unitId] = p;
-      this.connections[p.unitId] = new ModbusConnectionMaintainer(p);
+      this.connections[p.unitId] = new ModbusConnectionMaintainer(
+        p,
+        plcReadConfig,
+      );
     });
   }
 

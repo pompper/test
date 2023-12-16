@@ -1,17 +1,14 @@
 import PLCReadStrategy from '../interfaces/PLCReadStrategy';
+import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 
 export default class PLCDataRepository implements PLCReadStrategy {
-  instance!: Record<number, number[]>;
+  instance: Record<number, ModbusPLCDataModel> = [];
 
-  constructor() {
-    this.instance = [];
-  }
-
-  setPLCData(slaveId: number, data: number[]): void {
+  setPLCData(slaveId: number, data: ModbusPLCDataModel): void {
     this.instance[slaveId] = data;
   }
 
-  getPLCData(slaveId: number): number[] {
-    throw new Error('Method not implemented.');
+  getPLCData(slaveId: number): ModbusPLCDataModel {
+    return this.instance[slaveId];
   }
 }

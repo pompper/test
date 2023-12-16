@@ -2,6 +2,7 @@ import ModbusRTU from 'modbus-serial';
 import EventEmitter from 'events';
 import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
+import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 
 export default class ModbusConnectionMaintainer {
   private hasFailed: boolean = false;
@@ -11,12 +12,14 @@ export default class ModbusConnectionMaintainer {
   isConnected!: boolean;
   holdingRegistersData: number[] = [];
   event!: EventEmitter;
+  plcReadConfig!: PLCReadConfig;
 
-  constructor(modbusConfig: PLCModbusConfig) {
+  constructor(modbusConfig: PLCModbusConfig, plcReadConfig: PLCReadConfig) {
     this.config = modbusConfig;
     this.clientModbusTCP = new ModbusRTU();
     this.isConnected = false;
     this.event = new EventEmitter();
+    this.plcReadConfig = plcReadConfig;
   }
 
   public async connect() {
@@ -38,11 +41,13 @@ export default class ModbusConnectionMaintainer {
 
   // Method to perform the internet request
   private readHoldingRegisters(): Promise<any> {
+    const { start, end } =
+      this.plcReadConfig.plcReadConfig.readModbus.holdingRegisters;
     // Simulating an internet request that might fail
     return new Promise((resolve, reject) => {
       // Logic for making the internet request...
       this.clientModbusTCP
-        .readHoldingRegisters(0, 100)
+        .readHoldingRegisters(start, end)
         .then((data) => {
           this.hasFailed = false; // Reset the flag when the request succeeds
           return resolve(data);

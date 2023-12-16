@@ -1,3 +1,5 @@
+import ModbusConnectionMaintainer from '../PLC/ModbusConnectionMaintainer';
+
 export type PLCModbusConfig = {
   host: string;
   port: number;
@@ -8,6 +10,7 @@ export type PLCModbusConfig = {
 
 export default interface PLCConnectStrategy {
   modbusConfigs: Record<number, PLCModbusConfig>;
+  connections: Record<number, ModbusConnectionMaintainer>;
 
   connect(slaveId: number): boolean;
   disconnect(slaveId: number): boolean;
