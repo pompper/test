@@ -1,15 +1,15 @@
 import PLCConnectStrategy from './interfaces/PLCConnectStrategy';
-import PLCReadStrategy from './interfaces/PLCReadStrategy';
+import IPLCDataRepository from './interfaces/IPLCDataRepository';
 import IPLCController from './interfaces/IPLCController';
 import IModbusDataUpdater from './interfaces/IModbusDataUpdater';
 import ModbusDataUpdater from './PLC/ModbusDataUpdater';
 
 export default class PLCController implements IPLCController {
   modbus!: PLCConnectStrategy;
-  data!: PLCReadStrategy;
+  data!: IPLCDataRepository;
   updater!: IModbusDataUpdater;
 
-  constructor(connection: PLCConnectStrategy, plcReader: PLCReadStrategy) {
+  constructor(connection: PLCConnectStrategy, plcReader: IPLCDataRepository) {
     this.modbus = connection;
     this.data = plcReader;
     this.updater = new ModbusDataUpdater(this);
@@ -32,13 +32,13 @@ export default class PLCController implements IPLCController {
     this.updater.update();
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const key in this.modbus.modbusConfigs) {
-      if (
-        Object.prototype.hasOwnProperty.call(this.modbus.modbusConfigs, key)
-      ) {
-        const slaveId = parseInt(key, 10); // Convert key to a number if needed
-        const connectionData = this.modbus.modbusConfigs[slaveId];
-      }
-    }
+    // for (const key in this.modbus.modbusConfigs) {
+    //   if (
+    //     Object.prototype.hasOwnProperty.call(this.modbus.modbusConfigs, key)
+    //   ) {
+    //     const slaveId = parseInt(key, 10); // Convert key to a number if needed
+    //     const connectionData = this.modbus.modbusConfigs[slaveId];
+    //   }
+    // }
   }
 }

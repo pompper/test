@@ -1,7 +1,7 @@
-import PLCReadStrategy from '../interfaces/PLCReadStrategy';
+import IPLCDataRepository from '../interfaces/IPLCDataRepository';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 
-export default class PLCDataRepository implements PLCReadStrategy {
+export default class PLCDataRepository implements IPLCDataRepository {
   instance: Record<number, ModbusPLCDataModel> = [];
 
   setPLCData(slaveId: number, data: ModbusPLCDataModel): void {

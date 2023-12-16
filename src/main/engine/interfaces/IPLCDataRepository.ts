@@ -1,6 +1,6 @@
 import { ModbusPLCDataModel } from '../PLC/ModbusPLCDataModel';
 
-export default interface PLCReadStrategy {
+export default interface IPLCDataRepository {
   instance: Record<number, ModbusPLCDataModel>;
 
   setPLCData(slaveId: number, data: ModbusPLCDataModel): void;
