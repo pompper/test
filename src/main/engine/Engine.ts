@@ -1,6 +1,6 @@
 import UpdaterLoop from './UpdaterLoop';
 import { LoopEntity } from './interfaces/LoopEntity';
-import MainIpcController from './MainIpcController';
+import EngineController from './EngineController';
 import PLCController from './PLCController';
 import SettingsRepository from './data/SettingsRepository';
 import PLCModbusConnectionHandler from './PLC/PLCModbusConnectionHandler';
@@ -9,19 +9,14 @@ import ISettingRepository from './interfaces/ISettingRepository';
 import { EngineConfig } from './model/EngineConfig';
 
 export default class Engine implements LoopEntity {
-  public testValue!: number;
-
   public readonly settings!: ISettingRepository;
   public readonly updaterLoop!: UpdaterLoop;
-  // public readonly mainIpc!: MainIpcController;
+
   public readonly plc!: PLCController;
   public configs!: EngineConfig;
 
   constructor() {
-    this.testValue = 0;
-
     this.settings = new SettingsRepository();
-    // this.mainIpc = new MainIpcController();
     this.configs = {
       isSandboxOn: false,
       isAutoReconnectPLC: this.settings.data.autoReconnectPLC,

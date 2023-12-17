@@ -15,6 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import Engine from './engine/Engine';
+import EngineController from './engine/EngineController';
 
 class AppUpdater {
   constructor() {
@@ -126,6 +127,7 @@ app.on('window-all-closed', () => {
 });
 
 const engine = new Engine();
+const engineController = new EngineController(engine);
 ipcMain.on('test', async (event, arg) => {
   console.log(arg);
   // setInterval(() => {
