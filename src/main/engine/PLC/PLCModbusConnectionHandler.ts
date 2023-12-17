@@ -26,7 +26,8 @@ export default class PLCModbusConnectionHandler implements PLCConnectStrategy {
   }
 
   connect(slaveId: number): boolean {
-    throw new Error('Method not implemented.');
+    this.connections[slaveId].connect();
+    return true;
   }
   disconnect(slaveId: number): boolean {
     throw new Error('Method not implemented.');

@@ -19,19 +19,20 @@ export default class Engine implements LoopEntity {
 
   constructor() {
     this.testValue = 0;
-    this.configs = {
-      isSandboxOn: false,
-      isAutoReconnectPLC: false,
-    };
+
     this.settings = new SettingsRepository();
     // this.mainIpc = new MainIpcController();
-
+    this.configs = {
+      isSandboxOn: false,
+      isAutoReconnectPLC: this.settings.data.autoReconnectPLC,
+    };
     this.plc = new PLCController(
       new PLCModbusConnectionHandler(
         this.settings.getPlcConnections(),
         this.settings.getPlcReadConfig(),
       ),
       new PLCDataRepository(),
+      this,
     );
 
     this.updaterLoop = new UpdaterLoop(this);

@@ -4,6 +4,11 @@ import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 
+export type ModbusConnectionStatus =
+  | 'connected'
+  | 'disconnected'
+  | 'connecting';
+
 export default class ModbusConnectionMaintainer {
   private hasFailed: boolean = false;
   private lastRequestTimestamp: number = 0;
@@ -13,6 +18,7 @@ export default class ModbusConnectionMaintainer {
   holdingRegistersData: number[] = [];
   event!: EventEmitter;
   plcReadConfig!: PLCReadConfig;
+  status: ModbusConnectionStatus = 'disconnected';
 
   constructor(modbusConfig: PLCModbusConfig, plcReadConfig: PLCReadConfig) {
     this.config = modbusConfig;
@@ -20,9 +26,13 @@ export default class ModbusConnectionMaintainer {
     this.isConnected = false;
     this.event = new EventEmitter();
     this.plcReadConfig = plcReadConfig;
+
+    this.clientModbusTCP.setID(this.config.unitId);
+    this.clientModbusTCP.setTimeout(this.config.timeout);
   }
 
   public async connect() {
+    this.status = 'connecting';
     // open connection to a tcp line
     this.clientModbusTCP
       .connectTCP(this.config.host, {
@@ -30,13 +40,15 @@ export default class ModbusConnectionMaintainer {
       })
       .then(() => {
         this.isConnected = true;
+        this.status = 'connected';
         return true;
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((err: Error) => {
+        this.status = 'disconnected';
+        this.isConnected = false;
+        this.event.emit('error', err);
+        return false;
       });
-    this.clientModbusTCP.setID(this.config.unitId);
-    this.clientModbusTCP.setTimeout(this.config.timeout);
   }
 
   // Method to perform the internet request
@@ -95,10 +107,10 @@ export default class ModbusConnectionMaintainer {
         console.log(
           `Waiting for ${remainingTime} ms before making the next request...`,
         );
-        // await new Promise((resolve) => setTimeout(resolve, remainingTime));
       }
     } catch (error) {
       console.error('Error:', error);
+      this.event.emit('error', error);
     }
   }
 }
