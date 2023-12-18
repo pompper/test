@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './App';
 import store from './common/store';
-import EngineProvider from '../main/engine/EngineProvider';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
@@ -25,3 +24,7 @@ window.electron.ipcRenderer.on('test', (arg) => {
 });
 window.electron.ipcRenderer.sendMessage('ipc-example', ['ping']);
 window.electron.ipcRenderer.sendMessage('test', ['fucking test']);
+window.electron.engineIpc
+  .getSettings()
+  .then((e) => console.log(e))
+  .catch((e) => new Error('sd'));

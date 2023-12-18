@@ -16,6 +16,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import Engine from './engine/Engine';
 import EngineController from './engine/EngineController';
+import IPCEngineActionHandler from './ipc/IPCEngineActionHandler';
 
 class AppUpdater {
   constructor() {
@@ -128,6 +129,7 @@ app.on('window-all-closed', () => {
 
 const engine = new Engine();
 const engineController = new EngineController(engine);
+const ipcHandler = new IPCEngineActionHandler(engineController);
 ipcMain.on('test', async (event, arg) => {
   console.log(arg);
   // setInterval(() => {

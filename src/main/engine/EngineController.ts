@@ -5,7 +5,7 @@ import { SettingsModel } from './model/SettingsModel';
 export default class EngineController implements IEngineController {
   constructor(private engine: Engine) {}
   getSettings(): SettingsModel {
-    throw new Error('Method not implemented.');
+    return this.engine.settings.data;
   }
   saveSettings(settings: SettingsModel): void {
     throw new Error('Method not implemented.');

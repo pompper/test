@@ -1,6 +1,7 @@
 // Disable no-unused-vars, broken for spread args
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { engineControllerRendererIPC } from './ipc/EngineControllerRendererIPC';
 
 export type Channels = 'ipc-example' | 'test';
 
@@ -22,6 +23,7 @@ const electronHandler = {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
   },
+  engineIpc: engineControllerRendererIPC,
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
