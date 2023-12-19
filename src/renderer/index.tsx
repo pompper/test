@@ -29,7 +29,7 @@ window.electron.engineIpc
   .then((e) => console.log(e))
   .catch((e) => e);
 
-window.electron.engineIpc.connect(1);
+// window.electron.engineIpc.connect(1);
 window.electron.ipcRenderer.on('main:log', (e) => {
   console.log(e);
 });
