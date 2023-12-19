@@ -1,3 +1,4 @@
+import logger from '../../logger';
 import PLCController from '../PLCController';
 import IModbusUpdater from '../interfaces/IModbusUpdater';
 import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
@@ -23,6 +24,7 @@ export default class ModbusUpdater implements IModbusUpdater {
         this.plcController.modbus.connections[key].event.on(
           'data',
           (data: ModbusPLCDataModel) => {
+            logger.debug(data);
             this.plcController.data.setPLCData(data.unitId, data);
           },
         );

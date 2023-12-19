@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
+import logger from '../../logger';
 
 export type ModbusConnectionStatus =
   | 'connected'
@@ -60,7 +61,6 @@ export default class ModbusConnectionMaintainer {
       this.clientModbusTCP
         .readHoldingRegisters(start, end)
         .then((data) => {
-          console.log(data.data);
           this.hasFailed = false; // Reset the flag when the request succeeds
           return resolve(data.data);
         })
@@ -103,12 +103,12 @@ export default class ModbusConnectionMaintainer {
         this.event.emit('data', eventEmit);
       } else {
         const remainingTime = this.config.requestInterval - elapsedTime;
-        console.log(
+        logger.silly(
           `Waiting for ${remainingTime} ms before making the next request...`,
         );
       }
     } catch (error) {
-      console.error('Error:', error);
+      logger.error(error);
       this.event.emit('error', error);
     }
   }

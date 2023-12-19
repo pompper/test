@@ -30,3 +30,6 @@ window.electron.engineIpc
   .catch((e) => e);
 
 window.electron.engineIpc.connect(1);
+window.electron.ipcRenderer.on('main:log', (e) => {
+  console.log(e);
+});

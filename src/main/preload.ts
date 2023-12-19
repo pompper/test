@@ -3,7 +3,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { engineControllerRendererIPC } from './ipc/EngineControllerRendererIPC';
 
-export type Channels = 'ipc-example' | 'test';
+export type Channels = 'ipc-example' | 'test' | 'main:log';
 
 const electronHandler = {
   ipcRenderer: {

@@ -17,6 +17,7 @@ import { resolveHtmlPath } from './util';
 import Engine from './engine/Engine';
 import EngineController from './engine/EngineController';
 import IPCEngineActionHandler from './ipc/IPCEngineActionHandler';
+import logger, { IPCRendererTransport } from './logger';
 
 class AppUpdater {
   constructor() {
@@ -110,6 +111,8 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
+
+  logger.add(new IPCRendererTransport(mainWindow));
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
