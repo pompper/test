@@ -6,6 +6,7 @@ export default class IPCEngineActionHandler {
   constructor(engineController: IEngineController) {
     const actBuilder = new IPCActionBuilder(engineController);
     const actions = actBuilder.getIpcActions();
+
     actions.map((a) => {
       return ipcMain.handle(a.topic, (event, args) => a.action(args));
     });

@@ -1,4 +1,5 @@
 import Engine from './Engine';
+import { ModbusPLCDataModel } from './PLC/ModbusPLCDataModel';
 import IEngineController from './interfaces/IEngineController';
 import { SettingsModel } from './model/SettingsModel';
 
@@ -16,5 +17,8 @@ export default class EngineController implements IEngineController {
   }
   ping(unitId: number): void {
     this.engine.plc.testConnection(unitId);
+  }
+  getPLCData(unitId: number): ModbusPLCDataModel {
+    return this.engine.plc.data.getPLCData(unitId);
   }
 }

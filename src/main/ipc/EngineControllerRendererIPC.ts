@@ -2,7 +2,8 @@
 import { IpcRenderer, ipcRenderer } from 'electron';
 import { SettingsModel } from '../engine/model/SettingsModel';
 import { IPCActionTopic } from './IPCActions';
-import IEngineControllerRendererIPC from './IEngineControllerRendererIpc';
+import { ModbusPLCDataModel } from '../engine/PLC/ModbusPLCDataModel';
+import IEngineControllerRendererIPC from './IEngineControllerRendererIPC';
 
 export const engineControllerRendererIPC: IEngineControllerRendererIPC = {
   connect(unitId: number): void {
@@ -16,5 +17,8 @@ export const engineControllerRendererIPC: IEngineControllerRendererIPC = {
   },
   saveSettings(settings: SettingsModel): void {
     throw new Error('Function not implemented.');
+  },
+  getPLCData(unitId: number): Promise<ModbusPLCDataModel> {
+    return ipcRenderer.invoke(IPCActionTopic.getPLCData, unitId);
   },
 };

@@ -4,6 +4,7 @@ export enum IPCActionTopic {
   connect = 'engine:connect',
   ping = 'engine:ping',
   getSettings = 'engine:getSettings',
+  getPLCData = 'engine:getPLCData',
 }
 
 export type IPCAction<T = any, U = any> = {
@@ -29,6 +30,10 @@ export default class IPCActionBuilder {
       {
         topic: IPCActionTopic.getSettings,
         action: () => this.engineController.getSettings(),
+      },
+      {
+        topic: IPCActionTopic.getPLCData,
+        action: (unitId: number) => this.engineController.getPLCData(unitId),
       },
     ];
   }

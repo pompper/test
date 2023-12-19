@@ -35,15 +35,5 @@ export default class PLCController implements IPLCController {
 
   update(): void {
     this.updater.update();
-
-    // eslint-disable-next-line no-restricted-syntax
-    // for (const key in this.modbus.modbusConfigs) {
-    //   if (
-    //     Object.prototype.hasOwnProperty.call(this.modbus.modbusConfigs, key)
-    //   ) {
-    //     const slaveId = parseInt(key, 10); // Convert key to a number if needed
-    //     const connectionData = this.modbus.modbusConfigs[slaveId];
-    //   }
-    // }
   }
 }

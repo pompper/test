@@ -27,4 +27,6 @@ window.electron.ipcRenderer.sendMessage('test', ['fucking test']);
 window.electron.engineIpc
   .getSettings()
   .then((e) => console.log(e))
-  .catch((e) => new Error('sd'));
+  .catch((e) => e);
+
+window.electron.engineIpc.connect(1);

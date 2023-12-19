@@ -6,6 +6,7 @@ import ISettingRepository from '../interfaces/ISettingRepository';
 import { APP_CONFIG_JSON_PATH } from './constants';
 import { isDebug } from '../utils/CommonUtils';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
+import { getAssetPath } from '../../main';
 
 export default class SettingsRepository implements ISettingRepository {
   data!: SettingsModel;
@@ -13,7 +14,7 @@ export default class SettingsRepository implements ISettingRepository {
 
   constructor() {
     const rootDir = process.cwd();
-    this.settingJsonPath = path.join(rootDir, APP_CONFIG_JSON_PATH);
+    this.settingJsonPath = getAssetPath(APP_CONFIG_JSON_PATH);
     this.setData();
   }
 

@@ -52,21 +52,21 @@ export default class ModbusConnectionMaintainer {
   }
 
   // Method to perform the internet request
-  private readHoldingRegisters(): Promise<any> {
-    const { start, end } =
-      this.plcReadConfig.plcReadConfig.readModbus.holdingRegisters;
+  private readHoldingRegisters(): Promise<number[]> {
+    const { start, end } = this.plcReadConfig.readModbus.holdingRegisters;
     // Simulating an internet request that might fail
     return new Promise((resolve, reject) => {
       // Logic for making the internet request...
       this.clientModbusTCP
         .readHoldingRegisters(start, end)
         .then((data) => {
+          console.log(data.data);
           this.hasFailed = false; // Reset the flag when the request succeeds
-          return resolve(data);
+          return resolve(data.data);
         })
-        .catch((e) => {
+        .catch((e: Error) => {
           this.handleFailedRequest(); // Call method to handle the failed request
-          return reject(new Error('Request failed'));
+          return reject(e);
         });
     });
   }
@@ -90,7 +90,6 @@ export default class ModbusConnectionMaintainer {
     try {
       const currentTime = Date.now();
       const elapsedTime = currentTime - this.lastRequestTimestamp;
-
       if (elapsedTime >= this.config.requestInterval) {
         this.holdingRegistersData = await this.readHoldingRegisters(); // Perform the Modbus request
         this.lastRequestTimestamp = Date.now(); // Update the timestamp after the request

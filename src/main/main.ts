@@ -59,18 +59,19 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
+
+// eslint-disable-next-line import/prefer-default-export
+export const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
+
 const createWindow = async () => {
   if (isDebug) {
     // await installExtensions();
   }
-
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -130,12 +131,6 @@ app.on('window-all-closed', () => {
 const engine = new Engine();
 const engineController = new EngineController(engine);
 const ipcHandler = new IPCEngineActionHandler(engineController);
-ipcMain.on('test', async (event, arg) => {
-  console.log(arg);
-  // setInterval(() => {
-  //   event.reply('test', engine.testValue);
-  // }, 1000);
-});
 
 app
   .whenReady()

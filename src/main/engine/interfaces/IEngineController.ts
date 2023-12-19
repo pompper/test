@@ -1,3 +1,4 @@
+import { ModbusPLCDataModel } from '../PLC/ModbusPLCDataModel';
 import { SettingsModel } from '../model/SettingsModel';
 
 export default interface IEngineController {
@@ -5,4 +6,5 @@ export default interface IEngineController {
   ping(unitId: number): void;
   getSettings(): SettingsModel;
   saveSettings(settings: SettingsModel): void;
+  getPLCData(unitId: number): ModbusPLCDataModel;
 }

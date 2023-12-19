@@ -10,7 +10,7 @@ export default class UpdaterLoop implements LoopEntity {
 
   constructor(private engine: Engine) {
     this.running = false;
-    this.intervalMs = 500;
+    this.intervalMs = 100;
   }
 
   start() {
