@@ -3,8 +3,13 @@ import winston, { format } from 'winston';
 import TransportStream from 'winston-transport';
 
 const { combine, timestamp, label, prettyPrint } = format;
+const loggerLevel =
+  process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true'
+    ? 'debug'
+    : 'info';
+
 const logger = winston.createLogger({
-  level: 'debug',
+  level: loggerLevel,
   format: combine(timestamp(), prettyPrint()),
   transports: [
     new winston.transports.Console({ format: winston.format.simple() }),

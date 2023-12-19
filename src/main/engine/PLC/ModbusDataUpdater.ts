@@ -5,6 +5,9 @@ import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 
 export default class ModbusUpdater implements IModbusUpdater {
+  retryReconnectIntervalMs: number = 3000;
+  lastConnectAttemptTimestamp: number = 0;
+
   constructor(public plcController: PLCController) {}
 
   public initialize(): void {
@@ -70,12 +73,17 @@ export default class ModbusUpdater implements IModbusUpdater {
     connection.update();
 
     // auto reconnect function
-    if (
-      !connection.isConnected &&
-      connection.status === 'disconnected' &&
-      this.plcController.engine.configs.isAutoReconnectPLC
-    ) {
-      this.plcController.modbus.connections[key].connect();
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - this.lastConnectAttemptTimestamp;
+    if (elapsedTime >= this.retryReconnectIntervalMs) {
+      this.lastConnectAttemptTimestamp = Date.now();
+      if (
+        !connection.isConnected &&
+        connection.status === 'disconnected' &&
+        this.plcController.engine.configs.isAutoReconnectPLC
+      ) {
+        this.plcController.modbus.connections[key].connect();
+      }
     }
   }
 }

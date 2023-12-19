@@ -87,12 +87,12 @@ export default class ModbusConnectionMaintainer {
     if (!this.isConnected) {
       return;
     }
-    try {
-      const currentTime = Date.now();
-      const elapsedTime = currentTime - this.lastRequestTimestamp;
-      if (elapsedTime >= this.config.requestInterval) {
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - this.lastRequestTimestamp;
+    if (elapsedTime >= this.config.requestInterval) {
+      this.lastRequestTimestamp = Date.now(); // Update the timestamp after the request
+      try {
         this.holdingRegistersData = await this.readHoldingRegisters(); // Perform the Modbus request
-        this.lastRequestTimestamp = Date.now(); // Update the timestamp after the request
 
         const eventEmit: ModbusPLCDataModel = {
           unitId: this.config.unitId,
@@ -101,15 +101,19 @@ export default class ModbusConnectionMaintainer {
           },
         };
         this.event.emit('data', eventEmit);
-      } else {
-        const remainingTime = this.config.requestInterval - elapsedTime;
-        logger.silly(
-          `Waiting for ${remainingTime} ms before making the next request...`,
-        );
+      } catch (error) {
+        logger.error(error);
+        console.error(error);
+        this.hasFailed = true;
+        this.isConnected = false;
+        this.status = 'disconnected';
+        this.event.emit('error', error);
       }
-    } catch (error) {
-      logger.error(error);
-      this.event.emit('error', error);
+    } else {
+      const remainingTime = this.config.requestInterval - elapsedTime;
+      logger.silly(
+        `Waiting for ${remainingTime} ms before making the next request...`,
+      );
     }
   }
 }

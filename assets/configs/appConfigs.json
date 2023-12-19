@@ -20,5 +20,5 @@
       }
     }
   },
-  "autoReconnectPLC": false
+  "autoReconnectPLC": true
 }
