@@ -18,6 +18,7 @@ import Engine from './engine/Engine';
 import EngineController from './engine/EngineController';
 import IPCEngineActionHandler from './ipc/IPCEngineActionHandler';
 import logger, { IPCRendererTransport } from './logger';
+import StationController from './station/StationController';
 
 class AppUpdater {
   constructor() {
@@ -131,6 +132,7 @@ app.on('window-all-closed', () => {
   }
 });
 
+// const stationController = new StationController();
 const engine = new Engine();
 const engineController = new EngineController(engine);
 const ipcHandler = new IPCEngineActionHandler(engineController);

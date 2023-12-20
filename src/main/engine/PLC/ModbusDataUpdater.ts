@@ -75,14 +75,18 @@ export default class ModbusUpdater implements IModbusUpdater {
     // auto reconnect function
     const currentTime = Date.now();
     const elapsedTime = currentTime - this.lastConnectAttemptTimestamp;
-    if (elapsedTime >= this.retryReconnectIntervalMs) {
-      this.lastConnectAttemptTimestamp = Date.now();
-      if (
-        !connection.isConnected &&
-        connection.status === 'disconnected' &&
-        this.plcController.engine.configs.isAutoReconnectPLC
-      ) {
+
+    if (
+      !connection.isConnected &&
+      connection.status === 'disconnected' &&
+      this.plcController.engine.configs.isAutoReconnectPLC
+    ) {
+      if (elapsedTime >= this.retryReconnectIntervalMs) {
+        this.lastConnectAttemptTimestamp = Date.now();
         this.plcController.modbus.connections[key].connect();
+      } else {
+        const remainingTime = this.retryReconnectIntervalMs - elapsedTime;
+        logger.silly(`retrying connection in ${remainingTime} ms`);
       }
     }
   }

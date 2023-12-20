@@ -34,6 +34,9 @@ export default class ModbusConnectionMaintainer {
 
   public async connect() {
     this.status = 'connecting';
+    logger.debug(
+      `connecting PLC: ${this.config.host} UnitID: ${this.config.unitId}`,
+    );
     // open connection to a tcp line
     this.clientModbusTCP
       .connectTCP(this.config.host, {
@@ -42,11 +45,18 @@ export default class ModbusConnectionMaintainer {
       .then(() => {
         this.isConnected = true;
         this.status = 'connected';
+        logger.debug(
+          `PLC connected successfully: ${this.config.host} UnitID: ${this.config.unitId}`,
+        );
         return true;
       })
       .catch((err: Error) => {
         this.status = 'disconnected';
         this.isConnected = false;
+        logger.debug(
+          `Failed to connect to PLC: ${this.config.host} UnitID: ${this.config.unitId}
+          Reason: ${err.message}`,
+        );
         this.event.emit('error', err);
         return false;
       });
@@ -65,7 +75,6 @@ export default class ModbusConnectionMaintainer {
           return resolve(data.data);
         })
         .catch((e: Error) => {
-          this.handleFailedRequest(); // Call method to handle the failed request
           return reject(e);
         });
     });
@@ -74,6 +83,10 @@ export default class ModbusConnectionMaintainer {
   // Method to handle the failed request and trigger the action once
   private handleFailedRequest(): void {
     if (!this.hasFailed) {
+      this.hasFailed = true;
+      this.isConnected = false;
+      this.status = 'disconnected';
+
       // Perform action or trigger webhook for the failed request
       console.log('Triggering webhook for failed request...');
 
@@ -103,11 +116,8 @@ export default class ModbusConnectionMaintainer {
         this.event.emit('data', eventEmit);
       } catch (error) {
         logger.error(error);
-        console.error(error);
-        this.hasFailed = true;
-        this.isConnected = false;
-        this.status = 'disconnected';
         this.event.emit('error', error);
+        this.handleFailedRequest();
       }
     } else {
       const remainingTime = this.config.requestInterval - elapsedTime;

@@ -7,12 +7,14 @@ import PLCModbusConnectionHandler from './PLC/PLCModbusConnectionHandler';
 import PLCDataRepository from './PLC/PLCDataRepository';
 import ISettingRepository from './interfaces/ISettingRepository';
 import { EngineConfig } from './model/EngineConfig';
+import StationController from '../station/StationController';
 
 export default class Engine implements LoopEntity {
   public readonly settings!: ISettingRepository;
   public readonly updaterLoop!: UpdaterLoop;
 
   public readonly plc!: PLCController;
+  public readonly station!: StationController;
   public configs!: EngineConfig;
 
   constructor() {
@@ -30,11 +32,14 @@ export default class Engine implements LoopEntity {
       this,
     );
 
+    this.station = new StationController(this);
+
     this.updaterLoop = new UpdaterLoop(this);
     this.updaterLoop.start();
   }
 
   update() {
     this.plc.update();
+    this.station.update();
   }
 }
