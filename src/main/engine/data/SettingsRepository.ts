@@ -7,34 +7,32 @@ import { APP_CONFIG_JSON_PATH } from './constants';
 import { isDebug } from '../utils/CommonUtils';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 import { getAssetPath } from '../../main';
+import logger from '../../logger';
+import { StationDataMap } from '../../station/model/StationItem';
 
 export default class SettingsRepository implements ISettingRepository {
   data!: SettingsModel;
   private settingJsonPath!: string;
 
   constructor() {
-    const rootDir = process.cwd();
     this.settingJsonPath = getAssetPath(APP_CONFIG_JSON_PATH);
-    this.setData();
+    this.syncDataWithConfigs();
   }
 
-  private setData(): void {
-    const data = this.loadFromConfigs();
-    if (data) {
-      this.data = data;
-    }
+  private syncDataWithConfigs(): void {
+    this.data = this.loadFromConfigs();
   }
 
-  private loadFromConfigs(): SettingsModel | null {
-    try {
-      const json = fs.readFileSync(this.settingJsonPath, 'utf8'); // Read the JSON file synchronously
-      if (isDebug) console.log('loaded configs', json);
-      return JSON.parse(json) as SettingsModel;
-    } catch (error) {
-      console.error('Error reading or parsing JSON file:', error);
-      return null;
-      // this.data = null; // Set jsonData to null if there's an error
-    }
+  private loadFromConfigs(): SettingsModel {
+    const json = fs.readFileSync(this.settingJsonPath, 'utf8'); // Read the JSON file synchronously
+    const data = JSON.parse(json) as SettingsModel;
+    if (isDebug)
+      logger.log({
+        level: 'debug',
+        message: 'Loaded config',
+        json: data,
+      });
+    return data;
   }
 
   save() {}
@@ -44,5 +42,9 @@ export default class SettingsRepository implements ISettingRepository {
 
   getPlcReadConfig(): PLCReadConfig {
     return this.data.plcReadConfig;
+  }
+
+  getStationDataMap(): StationDataMap {
+    return this.data.stationDataMap;
   }
 }

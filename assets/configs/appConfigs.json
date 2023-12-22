@@ -5,20 +5,75 @@
       "port": 502,
       "unitId": 1,
       "requestInterval": 500,
-      "timeout": 2000
+      "timeout": 4000
     }
   ],
   "plcReadConfig": {
     "readModbus": {
       "holdingRegisters": {
         "start": 0,
-        "end": 100
+        "length": 100
       },
       "coils": {
         "start": 0,
-        "end": 100
+        "length": 100
       }
     }
   },
-  "autoReconnectPLC": true
+  "autoReconnectPLC": true,
+  "stationInfo": {
+    "id": "S3201150",
+    "address": "Downtown สายไหม ระยอง 10160",
+    "code": "S3201150",
+    "type": "normal_v1",
+    "version": "1.0.0",
+    "lastUpdateTimestamp": "2020-01-01T00:00:00.000Z"
+  },
+  "stationDataMap": {
+    "cabinets": [
+      {
+        "id": "S2210042_1",
+        "localId": 1,
+        "plcUnitId": 1,
+        "slots": [
+          {
+            "id": "S2210042_1_A1",
+            "localId": 0,
+            "rfidConfig": {
+              "type": "holdingRegisters",
+              "start": 0,
+              "length": 7
+            }
+          },
+          {
+            "id": "S2210042_1_A2",
+            "localId": 1,
+            "rfidConfig": {
+              "type": "holdingRegisters",
+              "start": 10,
+              "length": 7
+            }
+          },
+          {
+            "id": "S2210042_1_A2",
+            "localId": 1,
+            "rfidConfig": {
+              "type": "holdingRegisters",
+              "start": 20,
+              "length": 7
+            }
+          },
+          {
+            "id": "S2210042_1_A3",
+            "localId": 2,
+            "rfidConfig": {
+              "type": "holdingRegisters",
+              "start": 30,
+              "length": 7
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

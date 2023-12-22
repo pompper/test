@@ -1,6 +1,5 @@
 import UpdaterLoop from './UpdaterLoop';
 import { LoopEntity } from './interfaces/LoopEntity';
-import EngineController from './EngineController';
 import PLCController from './PLCController';
 import SettingsRepository from './data/SettingsRepository';
 import PLCModbusConnectionHandler from './PLC/PLCModbusConnectionHandler';

@@ -2,11 +2,11 @@ export type PLCReadConfig = {
   readModbus: {
     holdingRegisters: {
       start: number;
-      end: number;
+      length: number;
     };
     coils: {
       start: number;
-      end: number;
+      length: number;
     };
   };
 };

@@ -1,8 +1,9 @@
-export type PLCDeviceType =
-  | 'coils'
-  | 'discreteInputs'
-  | 'holdingRegisters'
-  | 'inputRegisters';
+export enum PLCDeviceType {
+  coils = 'coils',
+  discreteInputs = 'discreteInputs',
+  holdingRegisters = 'holdingRegisters',
+  inputRegisters = 'inputRegisters',
+}
 
 export type PLCCommand = {
   type: PLCDeviceType;

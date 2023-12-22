@@ -1,15 +1,22 @@
 import logger from '../../logger';
 import PLCController from '../PLCController';
+import { EngineEventChannel } from '../data/constants';
 import IModbusUpdater from '../interfaces/IModbusUpdater';
 import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 
+/**
+ * Represents a Modbus data updater that listens for Modbus events and updates the PLC data.
+ */
 export default class ModbusUpdater implements IModbusUpdater {
   retryReconnectIntervalMs: number = 3000;
   lastConnectAttemptTimestamp: number = 0;
 
   constructor(public plcController: PLCController) {}
 
+  /**
+   * Initializes the ModbusUpdater by setting up event listeners.
+   */
   public initialize(): void {
     this.listenModbusRead();
     this.listenModbusError();
@@ -29,6 +36,7 @@ export default class ModbusUpdater implements IModbusUpdater {
           (data: ModbusPLCDataModel) => {
             logger.debug(data);
             this.plcController.data.setPLCData(data.unitId, data);
+            this.plcController.emit(EngineEventChannel.PLC_DATA_UPDATED, data);
           },
         );
       }
@@ -54,6 +62,9 @@ export default class ModbusUpdater implements IModbusUpdater {
     }
   }
 
+  /**
+   * Updates the Modbus connections by calling the update function for each connection.
+   */
   update(): void {
     // eslint-disable-next-line no-restricted-syntax
     for (const key in this.plcController.modbus.connections) {
@@ -68,6 +79,10 @@ export default class ModbusUpdater implements IModbusUpdater {
     }
   }
 
+  /**
+   * Updates a single Modbus connection.
+   * @param key defines the key of the connection to update
+   */
   private updateEach(key: number) {
     const connection = this.plcController.modbus.connections[key];
     connection.update();

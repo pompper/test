@@ -32,13 +32,13 @@ export default class ModbusConnectionMaintainer {
     this.clientModbusTCP.setTimeout(this.config.timeout);
   }
 
-  public async connect() {
+  public async connect(): Promise<boolean> {
     this.status = 'connecting';
     logger.debug(
       `connecting PLC: ${this.config.host} UnitID: ${this.config.unitId}`,
     );
     // open connection to a tcp line
-    this.clientModbusTCP
+    return this.clientModbusTCP
       .connectTCP(this.config.host, {
         port: this.config.port,
       })
@@ -64,12 +64,12 @@ export default class ModbusConnectionMaintainer {
 
   // Method to perform the internet request
   private readHoldingRegisters(): Promise<number[]> {
-    const { start, end } = this.plcReadConfig.readModbus.holdingRegisters;
+    const { start, length } = this.plcReadConfig.readModbus.holdingRegisters;
     // Simulating an internet request that might fail
     return new Promise((resolve, reject) => {
       // Logic for making the internet request...
       this.clientModbusTCP
-        .readHoldingRegisters(start, end)
+        .readHoldingRegisters(start, length)
         .then((data) => {
           this.hasFailed = false; // Reset the flag when the request succeeds
           return resolve(data.data);
@@ -111,6 +111,7 @@ export default class ModbusConnectionMaintainer {
           unitId: this.config.unitId,
           data: {
             holdingRegisters: this.holdingRegistersData,
+            // coils: [],
           },
         };
         this.event.emit('data', eventEmit);
