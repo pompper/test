@@ -56,7 +56,7 @@
           },
           {
             "id": "S2210042_1_A2",
-            "localId": 1,
+            "localId": 2,
             "rfidConfig": {
               "type": "holdingRegisters",
               "start": 20,
@@ -65,7 +65,7 @@
           },
           {
             "id": "S2210042_1_A3",
-            "localId": 2,
+            "localId": 3,
             "rfidConfig": {
               "type": "holdingRegisters",
               "start": 30,

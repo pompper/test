@@ -1,4 +1,5 @@
 import { PLCCommand } from '../../engine/model/PLCCommand';
+import { Slot } from './SlotLiveData';
 
 export type StationInfo = {
   id: string;
@@ -34,14 +35,8 @@ export type StationDataMap = {
   cabinets: CabinetDataMap[];
 };
 
-export type Slot = {
-  id: string;
-  localId: number;
-  rfid: string;
-};
-
 export type Cabinet = {
-  id: number;
+  id: string;
   localId: number;
   slots: Slot[];
   lastUpdateTimestamp: number;

@@ -4,7 +4,6 @@ import LiveDataRepository from './data/LiveDataRepository';
 import {
   Cabinet,
   CabinetDataMap,
-  Slot,
   SlotDataMap,
   StationDataMap,
   StationLiveData,
@@ -42,18 +41,25 @@ export default class StationDataMapper {
     const { unitId } = plcData;
     const cabinetDataMap = this.getCabinetByLocalId(unitId);
     if (!cabinetDataMap) {
-      throw new Error(`Cabinet with localId ${unitId} not found`);
+      throw new Error(`Cabinet DataMap with localId ${unitId} not found`);
     }
 
-    const { slots } = cabinetDataMap;
-    slots.map((slot: SlotDataMap) => {
-      const { rfidConfig, localId, id } = slot;
+    const slotsDataMap = cabinetDataMap.slots;
+
+    // iterate through slotsDataMap to map each slot data from modbus to local station data
+    slotsDataMap.map((slotDataMap: SlotDataMap) => {
+      const { rfidConfig, localId } = slotDataMap;
       const { start, length, type } = rfidConfig;
-      const data = (plcData.data[type] as number[]).slice(
+      const rfidWords = (plcData.data[type] as number[]).slice(
         start,
         start + length!,
       );
-      const rfid = data.join(' ');
+      const rfid = rfidWords.join(' ');
+      if (!this.liveData.getSlotByLocalIdAndCabinetLocalId(unitId, localId)) {
+        throw new Error(
+          `Slot Live Data with localId ${unitId} ${localId} not found`,
+        );
+      }
       return this.liveData.setSlotRFIDByLocalIdAndCabinetLocalId(
         unitId,
         localId,

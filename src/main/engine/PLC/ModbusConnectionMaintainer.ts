@@ -53,7 +53,7 @@ export default class ModbusConnectionMaintainer {
       .catch((err: Error) => {
         this.status = 'disconnected';
         this.isConnected = false;
-        logger.debug(
+        logger.error(
           `Failed to connect to PLC: ${this.config.host} UnitID: ${this.config.unitId}
           Reason: ${err.message}`,
         );

@@ -55,7 +55,7 @@ export default class ModbusUpdater implements IModbusUpdater {
         this.plcController.modbus.connections[key].event.on(
           'error',
           (error: Error) => {
-            console.error(error.message);
+            console.error(error);
           },
         );
       }
