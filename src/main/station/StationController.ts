@@ -26,6 +26,5 @@ export default class StationController implements LoopEntity {
   }
   update(): void {
     // console.log(this.liveData.getCabinetByLocalId(1));
-
   }
 }

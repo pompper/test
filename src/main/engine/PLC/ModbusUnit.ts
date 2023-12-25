@@ -16,7 +16,6 @@ export default class ModbusUnit {
   config!: PLCModbusConfig;
   clientModbusTCP!: ModbusRTU;
   isConnected!: boolean;
-  holdingRegistersData: number[] = [];
   event!: EventEmitter;
   plcReadConfig!: PLCReadConfig;
   status: ModbusConnectionStatus = 'disconnected';
@@ -63,7 +62,7 @@ export default class ModbusUnit {
   }
 
   // Method to perform the internet request
-  private readHoldingRegisters(
+  public readHoldingRegisters(
     start: number,
     length: number,
   ): Promise<number[]> {
@@ -72,6 +71,23 @@ export default class ModbusUnit {
       // Logic for making the internet request...
       this.clientModbusTCP
         .readHoldingRegisters(start, length)
+        .then((data) => {
+          this.hasFailed = false; // Reset the flag when the request succeeds
+          return resolve(data.data);
+        })
+        .catch((e: Error) => {
+          return reject(e);
+        });
+    });
+  }
+
+  // Method to perform the internet request
+  public readCoils(start: number, length: number): Promise<boolean[]> {
+    // Simulating an internet request that might fail
+    return new Promise((resolve, reject) => {
+      // Logic for making the internet request...
+      this.clientModbusTCP
+        .readCoils(start, length)
         .then((data) => {
           this.hasFailed = false; // Reset the flag when the request succeeds
           return resolve(data.data);
@@ -107,18 +123,13 @@ export default class ModbusUnit {
     if (elapsedTime >= this.config.requestInterval) {
       this.lastRequestTimestamp = Date.now(); // Update the timestamp after the request
       try {
-        const { start, length } =
-          this.plcReadConfig.readModbus.holdingRegisters;
-        this.holdingRegistersData = await this.readHoldingRegisters(
-          start,
-          length,
-        ); // Perform the Modbus request
+        const { holdingRegisters, coils } = await this.readPLC();
 
         const eventEmit: ModbusPLCDataModel = {
           unitId: this.config.unitId,
           data: {
-            holdingRegisters: this.holdingRegistersData,
-            // coils: [],
+            holdingRegisters,
+            coils,
           },
         };
         this.event.emit('data', eventEmit);
@@ -133,5 +144,25 @@ export default class ModbusUnit {
         `Waiting for ${remainingTime} ms before making the next request...`,
       );
     }
+  }
+
+  private async readPLC(): Promise<{
+    holdingRegisters: number[];
+    coils: boolean[];
+  }> {
+    const { start: startHoldingRegisters, length: lengthHoldingRegisters } =
+      this.plcReadConfig.readModbus.holdingRegisters;
+    const holdingRegistersData = await this.readHoldingRegisters(
+      startHoldingRegisters,
+      lengthHoldingRegisters,
+    ); // Perform the Modbus request
+
+    const { start: startCoils, length: lengthCoils } =
+      this.plcReadConfig.readModbus.coils;
+    const coilsData = await this.readCoils(startCoils, lengthCoils); // Perform the Modbus request
+    return {
+      holdingRegisters: holdingRegistersData,
+      coils: coilsData,
+    };
   }
 }
