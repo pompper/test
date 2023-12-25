@@ -63,8 +63,10 @@ export default class ModbusUnit {
   }
 
   // Method to perform the internet request
-  private readHoldingRegisters(): Promise<number[]> {
-    const { start, length } = this.plcReadConfig.readModbus.holdingRegisters;
+  private readHoldingRegisters(
+    start: number,
+    length: number,
+  ): Promise<number[]> {
     // Simulating an internet request that might fail
     return new Promise((resolve, reject) => {
       // Logic for making the internet request...
@@ -105,7 +107,12 @@ export default class ModbusUnit {
     if (elapsedTime >= this.config.requestInterval) {
       this.lastRequestTimestamp = Date.now(); // Update the timestamp after the request
       try {
-        this.holdingRegistersData = await this.readHoldingRegisters(); // Perform the Modbus request
+        const { start, length } =
+          this.plcReadConfig.readModbus.holdingRegisters;
+        this.holdingRegistersData = await this.readHoldingRegisters(
+          start,
+          length,
+        ); // Perform the Modbus request
 
         const eventEmit: ModbusPLCDataModel = {
           unitId: this.config.unitId,
