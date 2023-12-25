@@ -1,7 +1,11 @@
 import { PLCModbusConfig } from './PLCUnitsStrategy';
 import { SettingsModel } from '../model/SettingsModel';
 import { PLCReadConfig } from './PLCReadConfig';
-import { StationDataMap, StationInfo } from '../../station/model/StationItem';
+import {
+  StationDataMap,
+  StationHealthCheckConfig,
+  StationInfo,
+} from '../../station/model/StationItem';
 
 export default interface ISettingRepository {
   data: SettingsModel;
@@ -11,4 +15,5 @@ export default interface ISettingRepository {
   getPlcReadConfig(): PLCReadConfig;
   getStationDataMap(): StationDataMap;
   getStationInfo(): StationInfo;
+  getStationHealthCheckConfig(): StationHealthCheckConfig;
 }

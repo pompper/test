@@ -45,3 +45,9 @@ export type Cabinet = {
 export type StationLiveData = {
   cabinets: Cabinet[];
 };
+
+export type StationHealthCheckConfig = {
+  requestInterval: number;
+  timeout: number;
+  endpoint: string;
+};

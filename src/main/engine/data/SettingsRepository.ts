@@ -8,7 +8,11 @@ import { isDebug } from '../utils/CommonUtils';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 import { getAssetPath } from '../../main';
 import logger from '../../logger';
-import { StationDataMap, StationInfo } from '../../station/model/StationItem';
+import {
+  StationDataMap,
+  StationHealthCheckConfig,
+  StationInfo,
+} from '../../station/model/StationItem';
 
 export default class SettingsRepository implements ISettingRepository {
   data!: SettingsModel;
@@ -50,5 +54,9 @@ export default class SettingsRepository implements ISettingRepository {
 
   getStationInfo(): StationInfo {
     return this.data.stationInfo;
+  }
+
+  getStationHealthCheckConfig(): StationHealthCheckConfig {
+    return this.data.healthCheck;
   }
 }

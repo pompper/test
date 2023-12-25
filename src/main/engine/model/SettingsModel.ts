@@ -1,4 +1,8 @@
-import { StationDataMap, StationInfo } from '../../station/model/StationItem';
+import {
+  StationDataMap,
+  StationHealthCheckConfig,
+  StationInfo,
+} from '../../station/model/StationItem';
 import { PLCModbusConfig } from '../interfaces/PLCUnitsStrategy';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 
@@ -8,4 +12,5 @@ export type SettingsModel = {
   autoReconnectPLC: boolean;
   stationInfo: StationInfo;
   stationDataMap: StationDataMap;
+  healthCheck: StationHealthCheckConfig;
 };
