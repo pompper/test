@@ -2,7 +2,6 @@ import Engine from '../engine/Engine';
 import { ModbusPLCDataModel } from '../engine/PLC/ModbusPLCDataModel';
 import { EngineEventChannel } from '../engine/data/constants';
 import StationDataMapper from './StationDataMapper';
-import { Cabinet, StationLiveData } from './model/StationItem';
 
 export default class PLCDataTransmitter {
   constructor(
@@ -20,7 +19,8 @@ export default class PLCDataTransmitter {
       },
     );
   }
-  mapDataToCabinet(plcData: ModbusPLCDataModel) {
+
+  private mapDataToCabinet(plcData: ModbusPLCDataModel) {
     this.mapper.map(plcData);
   }
 }

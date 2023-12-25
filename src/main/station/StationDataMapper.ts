@@ -15,11 +15,13 @@ export default class StationDataMapper {
     private liveData: LiveDataRepository,
   ) {}
 
-  getCabinetByLocalId(localId: number): CabinetDataMap | undefined {
+  getCabinetDataMapByLocalId(localId: number): CabinetDataMap | undefined {
     return this.config.cabinets.find((cabinet) => cabinet.localId === localId);
   }
 
-  getSlotsByCabinetLocalId(cabinetLocalId: number): CabinetDataMap | undefined {
+  getSlotsDataMapByCabinetLocalId(
+    cabinetLocalId: number,
+  ): CabinetDataMap | undefined {
     return this.config.cabinets.find(
       (cabinet) => cabinet.localId === cabinetLocalId,
     );
@@ -29,7 +31,7 @@ export default class StationDataMapper {
     cabinetLocalId: number,
     slotLocalId: number,
   ): PLCCommand | undefined {
-    const cabinet = this.getCabinetByLocalId(cabinetLocalId);
+    const cabinet = this.getCabinetDataMapByLocalId(cabinetLocalId);
     if (!cabinet) {
       return undefined;
     }
@@ -39,7 +41,7 @@ export default class StationDataMapper {
 
   map(plcData: ModbusPLCDataModel): void {
     const { unitId } = plcData;
-    const cabinetDataMap = this.getCabinetByLocalId(unitId);
+    const cabinetDataMap = this.getCabinetDataMapByLocalId(unitId);
     if (!cabinetDataMap) {
       throw new Error(`Cabinet DataMap with localId ${unitId} not found`);
     }
@@ -55,11 +57,6 @@ export default class StationDataMapper {
         start + length!,
       );
       const rfid = rfidWords.join(' ');
-      if (!this.liveData.getSlotByLocalIdAndCabinetLocalId(unitId, localId)) {
-        throw new Error(
-          `Slot Live Data with localId ${unitId} ${localId} not found`,
-        );
-      }
       return this.liveData.setSlotRFIDByLocalIdAndCabinetLocalId(
         unitId,
         localId,

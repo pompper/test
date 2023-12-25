@@ -1,10 +1,13 @@
+import { EventEmitter } from 'stream';
 import { Slot } from '../model/SlotLiveData';
 import { Cabinet, StationDataMap, StationLiveData } from '../model/StationItem';
+import { StationEventChannel } from '../common/Constants';
 
-export default class LiveDataRepository {
+export default class LiveDataRepository extends EventEmitter {
   private instance!: StationLiveData;
 
   constructor() {
+    super();
     this.instance = {
       cabinets: [],
     };
@@ -64,10 +67,38 @@ export default class LiveDataRepository {
       cabinetLocalId,
       slotLocalId,
     );
-    if (!slot || !slot.cabinet) {
-      return;
+    if (!slot?.cabinet) {
+      throw new Error(
+        `Slot Live Data with localId Cabinet:${cabinetLocalId} Slot:${slotLocalId} not found`,
+      );
+    }
+
+    this.setNewSlotRFID(slot, rfid);
+  }
+  setNewSlotRFID(slot: Slot, rfid: string): void {
+    // emit event only if rfid changed
+    if (slot.rfid !== rfid) {
+      this.emitSlotRfidChangeEvent(slot, rfid);
     }
     slot.rfid = rfid;
-    slot.cabinet.lastUpdateTimestamp = Date.now();
+    slot.cabinet!.lastUpdateTimestamp = Date.now();
+    this.emitSlotUpdateEvent(slot, rfid);
+  }
+
+  private emitSlotRfidChangeEvent(slot: Slot, newRfid: string): void {
+    this.emit(StationEventChannel.STATION_LIVEDATA_CHANGED, {
+      cabinetLocalId: slot.cabinet!.localId,
+      slotLocalId: slot.localId,
+      previousRfid: slot.rfid,
+      newRfid,
+    });
+  }
+
+  private emitSlotUpdateEvent(slot: Slot, rfid: string): void {
+    this.emit(StationEventChannel.STATION_LIVEDATA_UPDATED, {
+      cabinetLocalId: slot.cabinet!.localId,
+      slotLocalId: slot.localId,
+      rfid,
+    });
   }
 }
