@@ -1,6 +1,6 @@
 import ModbusRTU from 'modbus-serial';
 import EventEmitter from 'events';
-import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
+import { PLCModbusConfig } from '../interfaces/PLCUnitsStrategy';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 import logger from '../../logger';
@@ -10,7 +10,7 @@ export type ModbusConnectionStatus =
   | 'disconnected'
   | 'connecting';
 
-export default class ModbusConnectionMaintainer {
+export default class ModbusUnit {
   private hasFailed: boolean = false;
   private lastRequestTimestamp: number = 0;
   config!: PLCModbusConfig;

@@ -1,8 +1,8 @@
-import PLCConnectStrategy from './PLCConnectStrategy';
+import PLCUnitsStrategy from './PLCUnitsStrategy';
 import IPLCDataRepository from './IPLCDataRepository';
 
 export default interface IPLCController {
-  modbus: PLCConnectStrategy;
+  modbus: PLCUnitsStrategy;
   data: IPLCDataRepository;
 
   connect(slaveId: number): boolean;

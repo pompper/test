@@ -1,12 +1,12 @@
-import PLCConnectStrategy, {
+import PLCUnitsStrategy, {
   PLCModbusConfig,
-} from '../interfaces/PLCConnectStrategy';
+} from '../interfaces/PLCUnitsStrategy';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
-import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
+import ModbusUnit from './ModbusUnit';
 
-export default class PLCModbusConnectionHandler implements PLCConnectStrategy {
+export default class PLCModbusConnectionHandler implements PLCUnitsStrategy {
   modbusConfigs: Record<number, PLCModbusConfig> = {};
-  connections: Record<number, ModbusConnectionMaintainer> = {};
+  units: Record<number, ModbusUnit> = {};
 
   constructor(plcConnections: PLCModbusConfig[], plcReadConfig: PLCReadConfig) {
     this.setPLCConntection(plcConnections, plcReadConfig);
@@ -18,15 +18,12 @@ export default class PLCModbusConnectionHandler implements PLCConnectStrategy {
   ) {
     plcConnections.forEach((p, i) => {
       this.modbusConfigs[p.unitId] = p;
-      this.connections[p.unitId] = new ModbusConnectionMaintainer(
-        p,
-        plcReadConfig,
-      );
+      this.units[p.unitId] = new ModbusUnit(p, plcReadConfig);
     });
   }
 
   connect(slaveId: number): boolean {
-    this.connections[slaveId].connect();
+    this.units[slaveId].connect();
     return true;
   }
   disconnect(slaveId: number): boolean {

@@ -1,5 +1,5 @@
 import { StationDataMap, StationInfo } from '../../station/model/StationItem';
-import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
+import { PLCModbusConfig } from '../interfaces/PLCUnitsStrategy';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 
 export type SettingsModel = {

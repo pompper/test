@@ -1,4 +1,4 @@
-import ModbusConnectionMaintainer from '../PLC/ModbusConnectionMaintainer';
+import ModbusUnit from '../PLC/ModbusUnit';
 
 export type PLCModbusConfig = {
   host: string;
@@ -8,9 +8,9 @@ export type PLCModbusConfig = {
   timeout: number;
 };
 
-export default interface PLCConnectStrategy {
+export default interface PLCUnitsStrategy {
   modbusConfigs: Record<number, PLCModbusConfig>;
-  connections: Record<number, ModbusConnectionMaintainer>;
+  units: Record<number, ModbusUnit>;
 
   connect(slaveId: number): boolean;
   disconnect(slaveId: number): boolean;

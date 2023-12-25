@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { PLCModbusConfig } from '../interfaces/PLCConnectStrategy';
+import { PLCModbusConfig } from '../interfaces/PLCUnitsStrategy';
 import { SettingsModel } from '../model/SettingsModel';
 import ISettingRepository from '../interfaces/ISettingRepository';
 import { APP_CONFIG_JSON_PATH } from './constants';
@@ -8,7 +8,7 @@ import { isDebug } from '../utils/CommonUtils';
 import { PLCReadConfig } from '../interfaces/PLCReadConfig';
 import { getAssetPath } from '../../main';
 import logger from '../../logger';
-import { StationDataMap } from '../../station/model/StationItem';
+import { StationDataMap, StationInfo } from '../../station/model/StationItem';
 
 export default class SettingsRepository implements ISettingRepository {
   data!: SettingsModel;
@@ -46,5 +46,9 @@ export default class SettingsRepository implements ISettingRepository {
 
   getStationDataMap(): StationDataMap {
     return this.data.stationDataMap;
+  }
+
+  getStationInfo(): StationInfo {
+    return this.data.stationInfo;
   }
 }

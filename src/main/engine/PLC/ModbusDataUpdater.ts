@@ -2,7 +2,7 @@ import logger from '../../logger';
 import PLCController from '../PLCController';
 import { EngineEventChannel } from '../data/constants';
 import IModbusUpdater from '../interfaces/IModbusUpdater';
-import ModbusConnectionMaintainer from './ModbusConnectionMaintainer';
+import ModbusUnit from './ModbusUnit';
 import { ModbusPLCDataModel } from './ModbusPLCDataModel';
 
 /**
@@ -24,14 +24,14 @@ export default class ModbusUpdater implements IModbusUpdater {
 
   private listenModbusRead() {
     // eslint-disable-next-line no-restricted-syntax
-    for (const key in this.plcController.modbus.connections) {
+    for (const key in this.plcController.modbus.units) {
       if (
         Object.prototype.hasOwnProperty.call(
-          this.plcController.modbus.connections,
+          this.plcController.modbus.units,
           key,
         )
       ) {
-        this.plcController.modbus.connections[key].event.on(
+        this.plcController.modbus.units[key].event.on(
           'data',
           (data: ModbusPLCDataModel) => {
             logger.debug(data);
@@ -45,14 +45,14 @@ export default class ModbusUpdater implements IModbusUpdater {
 
   private listenModbusError() {
     // eslint-disable-next-line no-restricted-syntax
-    for (const key in this.plcController.modbus.connections) {
+    for (const key in this.plcController.modbus.units) {
       if (
         Object.prototype.hasOwnProperty.call(
-          this.plcController.modbus.connections,
+          this.plcController.modbus.units,
           key,
         )
       ) {
-        this.plcController.modbus.connections[key].event.on(
+        this.plcController.modbus.units[key].event.on(
           'error',
           (error: Error) => {
             console.error(error);
@@ -67,10 +67,10 @@ export default class ModbusUpdater implements IModbusUpdater {
    */
   update(): void {
     // eslint-disable-next-line no-restricted-syntax
-    for (const key in this.plcController.modbus.connections) {
+    for (const key in this.plcController.modbus.units) {
       if (
         Object.prototype.hasOwnProperty.call(
-          this.plcController.modbus.connections,
+          this.plcController.modbus.units,
           key,
         )
       ) {
@@ -84,7 +84,7 @@ export default class ModbusUpdater implements IModbusUpdater {
    * @param key defines the key of the connection to update
    */
   private updateEach(key: number) {
-    const connection = this.plcController.modbus.connections[key];
+    const connection = this.plcController.modbus.units[key];
     connection.update();
 
     // auto reconnect function
@@ -98,7 +98,7 @@ export default class ModbusUpdater implements IModbusUpdater {
     ) {
       if (elapsedTime >= this.retryReconnectIntervalMs) {
         this.lastConnectAttemptTimestamp = Date.now();
-        this.plcController.modbus.connections[key].connect();
+        this.plcController.modbus.units[key].connect();
       } else {
         const remainingTime = this.retryReconnectIntervalMs - elapsedTime;
         logger.silly(`retrying connection in ${remainingTime} ms`);

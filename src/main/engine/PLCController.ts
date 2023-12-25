@@ -1,5 +1,5 @@
 import { EventEmitter } from 'stream';
-import PLCConnectStrategy from './interfaces/PLCConnectStrategy';
+import PLCUnitsStrategy from './interfaces/PLCUnitsStrategy';
 import IPLCDataRepository from './interfaces/IPLCDataRepository';
 import IPLCController from './interfaces/IPLCController';
 import IModbusUpdater from './interfaces/IModbusUpdater';
@@ -10,12 +10,12 @@ export default class PLCController
   extends EventEmitter
   implements IPLCController
 {
-  modbus!: PLCConnectStrategy;
+  modbus!: PLCUnitsStrategy;
   data!: IPLCDataRepository;
   private updater!: IModbusUpdater;
 
   constructor(
-    connection: PLCConnectStrategy,
+    connection: PLCUnitsStrategy,
     plcReader: IPLCDataRepository,
     public engine: Engine,
   ) {
