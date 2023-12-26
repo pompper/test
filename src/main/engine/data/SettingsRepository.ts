@@ -59,4 +59,7 @@ export default class SettingsRepository implements ISettingRepository {
   getStationHealthCheckConfig(): StationHealthCheckConfig {
     return this.data.healthCheck;
   }
+  getBaseBackendURL(): string {
+    return this.data.baseBackendURL;
+  }
 }

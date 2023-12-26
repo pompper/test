@@ -12,5 +12,6 @@ export type SettingsModel = {
   autoReconnectPLC: boolean;
   stationInfo: StationInfo;
   stationDataMap: StationDataMap;
+  baseBackendURL: string;
   healthCheck: StationHealthCheckConfig;
 };

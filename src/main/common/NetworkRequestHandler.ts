@@ -15,9 +15,14 @@ export default class NetworkRequestHandler {
     method: RequestMethod = RequestMethod.GET,
     body?: Record<string, any>,
   ): Promise<T> {
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
     // const url = `${this.baseURL}${endpoint}`;
     // // ... rest of the implementation remains the same
+
+    // mockup response
+    return {
+      url: `${this.baseURL}${endpoint}`,
+    } as T;
   }
 
   public async get<T>(endpoint: BaseApiEndpoint): Promise<T> {

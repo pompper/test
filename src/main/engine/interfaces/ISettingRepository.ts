@@ -16,4 +16,5 @@ export default interface ISettingRepository {
   getStationDataMap(): StationDataMap;
   getStationInfo(): StationInfo;
   getStationHealthCheckConfig(): StationHealthCheckConfig;
+  getBaseBackendURL(): string;
 }

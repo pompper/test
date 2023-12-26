@@ -20,11 +20,12 @@ export default class StationController implements LoopEntity {
   constructor(private engine: Engine) {
     const dataMap = engine.settings.getStationDataMap();
     const stationHealthConfig = engine.settings.getStationHealthCheckConfig();
-    console.log(stationHealthConfig);
+
     this.liveData = new LiveDataRepository();
     this.liveData.initialize(dataMap);
+
     this.info = engine.settings.getStationInfo();
-    this.health = new StationHealth(stationHealthConfig);
+    this.health = new StationHealth(stationHealthConfig, engine);
 
     const stationDataMapper = new StationDataMapper(dataMap, this.liveData);
     this.transmitter = new PLCDataTransmitter(engine, stationDataMapper);

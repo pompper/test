@@ -101,4 +101,8 @@ export default class LiveDataRepository extends EventEmitter {
       rfid,
     });
   }
+
+  public getInstance(): StationLiveData {
+    return this.instance;
+  }
 }

@@ -7,6 +7,7 @@ import PLCDataRepository from './PLC/PLCDataRepository';
 import ISettingRepository from './interfaces/ISettingRepository';
 import { EngineConfig } from './model/EngineConfig';
 import StationController from '../station/StationController';
+import API from '../common/API';
 
 export default class Engine implements LoopEntity {
   public readonly settings!: ISettingRepository;
@@ -22,6 +23,8 @@ export default class Engine implements LoopEntity {
       isSandboxOn: false,
       isAutoReconnectPLC: this.settings.data.autoReconnectPLC,
     };
+    API.initialize(this.settings.getBaseBackendURL());
+
     this.plc = new PLCController(
       new PLCModbusConnectionHandler(
         this.settings.getPlcConnections(),
