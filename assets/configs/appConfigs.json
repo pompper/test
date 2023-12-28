@@ -76,10 +76,9 @@
       }
     ]
   },
-  "baseBackendURL": "http://localhost:3000",
+  "baseBackendURL": "https://webhook.site",
   "healthCheck": {
     "requestInterval": 10000,
-    "timeout": 5000,
-    "endpoint": "/health"
+    "timeout": 5000
   }
 }

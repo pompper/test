@@ -4,5 +4,5 @@ export type Slot = {
   id: string;
   localId: number;
   rfid: string;
-  cabinet?: Cabinet;
+  cabinetLocalId: number;
 };

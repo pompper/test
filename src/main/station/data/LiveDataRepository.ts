@@ -24,6 +24,7 @@ export default class LiveDataRepository extends EventEmitter {
           id: s.id,
           localId: s.localId,
           rfid: '',
+          cabinetLocalId: d.localId,
         };
         return newSlot;
       });
@@ -34,9 +35,7 @@ export default class LiveDataRepository extends EventEmitter {
         slots,
         lastUpdateTimestamp: Date.now(),
       };
-      newCabinet.slots.forEach((s) => {
-        s.cabinet = newCabinet;
-      });
+
       return newCabinet;
     });
   }
@@ -67,9 +66,10 @@ export default class LiveDataRepository extends EventEmitter {
       cabinetLocalId,
       slotLocalId,
     );
-    if (!slot?.cabinet) {
+
+    if (slot === undefined) {
       throw new Error(
-        `Slot Live Data with localId Cabinet:${cabinetLocalId} Slot:${slotLocalId} not found`,
+        `Slot not found at Cabinet:${cabinetLocalId} Slot:${slotLocalId}`,
       );
     }
 
@@ -81,13 +81,12 @@ export default class LiveDataRepository extends EventEmitter {
       this.emitSlotRfidChangeEvent(slot, rfid);
     }
     slot.rfid = rfid;
-    slot.cabinet!.lastUpdateTimestamp = Date.now();
     this.emitSlotUpdateEvent(slot, rfid);
   }
 
   private emitSlotRfidChangeEvent(slot: Slot, newRfid: string): void {
     this.emit(StationEventChannel.STATION_LIVEDATA_CHANGED, {
-      cabinetLocalId: slot.cabinet!.localId,
+      cabinetLocalId: slot.cabinetLocalId,
       slotLocalId: slot.localId,
       previousRfid: slot.rfid,
       newRfid,
@@ -96,7 +95,7 @@ export default class LiveDataRepository extends EventEmitter {
 
   private emitSlotUpdateEvent(slot: Slot, rfid: string): void {
     this.emit(StationEventChannel.STATION_LIVEDATA_UPDATED, {
-      cabinetLocalId: slot.cabinet!.localId,
+      cabinetLocalId: slot.cabinetLocalId,
       slotLocalId: slot.localId,
       rfid,
     });

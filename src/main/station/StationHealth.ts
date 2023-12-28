@@ -28,7 +28,6 @@ export default class StationHealth implements LoopEntity {
   private async sendHealthUpdate(): Promise<void> {
     const liveData = this.engine.station.liveData.getInstance();
     const { cabinets } = liveData;
-
     // mockup
     const healthData: HealthCheckData = {
       id: this.engine.station.info.id,
@@ -37,7 +36,6 @@ export default class StationHealth implements LoopEntity {
       },
     };
     const response = await API.sendHealthStatus(healthData);
-    console.log(`RESPONSE: `, response);
   }
 
   update(): void {

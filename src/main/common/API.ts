@@ -10,7 +10,6 @@ export default abstract class API {
   }
 
   static async sendHealthStatus(data: HealthCheckData): Promise<any> {
-    const endpoint = BaseApiEndpoint.HEALTH_CHECK;
-    return API.networkHandler.post<any>(endpoint, data);
+    return API.networkHandler.post<any>(BaseApiEndpoint.HEALTH_CHECK, data);
   }
 }
