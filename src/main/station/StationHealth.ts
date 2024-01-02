@@ -35,7 +35,14 @@ export default class StationHealth implements LoopEntity {
         cabinets,
       },
     };
-    const response = await API.sendHealthStatus(healthData);
+    try {
+      const response = await API.sendHealthStatus(healthData);
+      console.log(response);
+    } catch (e) {
+      console.error(e);
+    }
+    // const response = await API.sendHealthStatus(healthData);
+    // console.log(response)
   }
 
   update(): void {

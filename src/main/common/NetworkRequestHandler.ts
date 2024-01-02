@@ -3,6 +3,7 @@
 import axios, { Axios, AxiosInstance } from 'axios';
 import { BaseApiEndpoint } from './ApiEndpoints';
 import { RequestMethod } from './NetworkRequestMethod';
+import logger from '../logger';
 
 export interface ApiError {
   message: string;
@@ -73,7 +74,7 @@ export default class NetworkRequestHandler {
       const { data, status } = await this.axiosInstance.post<T>(endpoint, body);
       return data as T;
     } catch (error: any) {
-      throw new Error(error);
+      throw new Error('Endpoint: ' + endpoint + ' Error: ' + error);
     }
   }
 
