@@ -32,6 +32,7 @@ export default class LiveDataRepository extends EventEmitter {
       const newCabinet: Cabinet = {
         id: d.id,
         localId: d.localId,
+        slotCount: d.slotCount,
         slots,
         lastUpdateTimestamp: Date.now(),
       };

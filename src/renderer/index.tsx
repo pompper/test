@@ -33,3 +33,5 @@ window.electron.engineIpc
 window.electron.ipcRenderer.on('main:log', (e) => {
   console.log(e);
 });
+
+window.electron.engineIpc.getStationLiveData().then((e) => console.log(e))

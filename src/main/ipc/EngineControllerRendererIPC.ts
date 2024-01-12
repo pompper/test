@@ -4,6 +4,7 @@ import { SettingsModel } from '../engine/model/SettingsModel';
 import { IPCActionTopic } from './IPCActions';
 import { ModbusPLCDataModel } from '../engine/PLC/ModbusPLCDataModel';
 import IEngineControllerRendererIPC from './IEngineControllerRendererIPC';
+import { StationLiveData } from '../station/model/StationItem';
 
 export const engineControllerRendererIPC: IEngineControllerRendererIPC = {
   connect(unitId: number): void {
@@ -18,7 +19,10 @@ export const engineControllerRendererIPC: IEngineControllerRendererIPC = {
   saveSettings(settings: SettingsModel): void {
     throw new Error('Function not implemented.');
   },
-  getPLCData(unitId: number): Promise<ModbusPLCDataModel> {
+  async getPLCData(unitId: number): Promise<ModbusPLCDataModel> {
     return ipcRenderer.invoke(IPCActionTopic.getPLCData, unitId);
   },
+  async getStationLiveData(): Promise<StationLiveData> {
+    return ipcRenderer.invoke(IPCActionTopic.getLiveData);
+  }
 };

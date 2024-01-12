@@ -28,6 +28,7 @@ export type CabinetDataMap = {
   id: string;
   localId: number;
   plcUnitId: number;
+  slotCount: number;
   slots: SlotDataMap[];
 };
 
@@ -38,6 +39,7 @@ export type StationDataMap = {
 export type Cabinet = {
   id: string;
   localId: number;
+  slotCount: number;
   slots: Slot[];
   lastUpdateTimestamp: number;
 };

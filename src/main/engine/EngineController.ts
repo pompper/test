@@ -1,3 +1,4 @@
+import { StationLiveData } from '../station/model/StationItem';
 import Engine from './Engine';
 import { ModbusPLCDataModel } from './PLC/ModbusPLCDataModel';
 import IEngineController from './interfaces/IEngineController';
@@ -20,5 +21,8 @@ export default class EngineController implements IEngineController {
   }
   getPLCData(unitId: number): ModbusPLCDataModel {
     return this.engine.plc.data.getPLCData(unitId);
+  }
+  getLiveData(): StationLiveData {
+    return this.engine.station.liveData.getInstance();
   }
 }
