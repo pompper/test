@@ -1,0 +1,45 @@
+{
+  "cabinets": [
+    {
+      "id": "S2210042_1",
+      "localId": 1,
+      "slotCount": 4,
+      "slots": [
+        {
+          "id": "S2210042_1_A1",
+          "localId": 0,
+          "rfid": "",
+          "cabinetLocalId": 1
+        },
+        {
+          "id": "S2210042_1_A2",
+          "localId": 1,
+          "rfid": "",
+          "cabinetLocalId": 1
+        },
+        {
+          "id": "S2210042_1_A3",
+          "localId": 2,
+          "rfid": "",
+          "cabinetLocalId": 1
+        },
+        {
+          "id": "S2210042_1_A4",
+          "localId": 3,
+          "rfid": "",
+          "cabinetLocalId": 1
+        }
+      ],
+      "lastUpdateTimestamp": 1705283154583
+    }
+  ]
+}
+
+// const firstCabinetId = data?.cabinets[0]?.id;
+// <>
+//   {firstCabinetId && (
+//     <p>Cabinet 1: {firstCabinetId}</p>
+//   )}
+// </>
+
+// <pre>{JSON.stringify(data, null, 2)}</pre>

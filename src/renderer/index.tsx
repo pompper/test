@@ -24,6 +24,8 @@ window.electron.ipcRenderer.on('test', (arg) => {
 });
 window.electron.ipcRenderer.sendMessage('ipc-example', ['ping']);
 window.electron.ipcRenderer.sendMessage('test', ['fucking test']);
+
+// This one
 window.electron.engineIpc
   .getSettings()
   .then((e) => console.log(e))
@@ -31,7 +33,7 @@ window.electron.engineIpc
 
 // window.electron.engineIpc.connect(1);
 window.electron.ipcRenderer.on('main:log', (e) => {
-  console.log(e);
+  // console.log(e);
 });
 
 window.electron.engineIpc.getStationLiveData().then((e) => console.log(e))
